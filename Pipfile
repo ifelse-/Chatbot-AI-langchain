@@ -11,6 +11,7 @@ bs4 = "*"
 pinecone-client = "*"
 tiktoken = "*"
 streamlit-chat = "*"
+black = "*"
 
 [dev-packages]
 

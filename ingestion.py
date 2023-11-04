@@ -3,6 +3,11 @@ from langchain.document_loaders import TextLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
+
+from langchain.vectorstores import Chroma
+from langchain.llms import OpenAI
+from langchain.chains import ConversationalRetrievalChain
+
 import pinecone
 from consts import PINECONE_INDEX_NAME
 
@@ -32,3 +37,4 @@ def ingest_chain() -> None:
 
 if __name__ == '__main__':
     ingest_chain()
+

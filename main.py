@@ -32,16 +32,14 @@ if prompt:
             [doc.metadata["source"] for doc in generated_response["source_documents"]]
         )
         formatted_response = (
-            f"{generated_response['result']}"
+            f"{generated_response['result']} \n\n {create_sources_string(sources)}"
         )
 
         st.session_state["user_prompt_history"].append(prompt)
         st.session_state["chat_results_history"].append(formatted_response)
 
+
 if st.session_state["chat_results_history"]:
-    for generated_response, user_query in zip(
-            st.session_state["chat_results_history"],
-            st.session_state["user_prompt_history"],
-    ):
+    for generated_response, user_query in zip(st.session_state["user_prompt_history"], st.session_state["chat_results_history"]):
         message(user_query, is_user=True)
         message(generated_response)
