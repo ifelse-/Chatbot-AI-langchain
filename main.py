@@ -1,48 +1,47 @@
-import os
-import getpass
-from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
-from langchain.document_loaders import TextLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Pinecone
-import pinecone
+from backend.core import run_llm
 import streamlit as st
+from streamlit_chat import message
+from typing import Set
 
-from consts import PINECONE_INDEX_NAME
+st.header("Bot Assistant")
 
-pinecone.init(
-    api_key=os.environ["PINECONE_API_KEY"],
-    environment=os.environ["PINECONE_ENV_REGION"]
-)
+prompt = st.text_input("Prompt", placeholder="Enter your prompt here...")
 
+if "user_prompt_history" not in st.session_state:
+    st.session_state["user_prompt_history"] = []
 
-def ingest_chain() -> None:
-    loader = TextLoader("bio/person.txt")
-    documents = loader.load()
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-    docs = text_splitter.split_documents(documents)
-    embeddings = OpenAIEmbeddings()
-
-    # First, check if our index already exists. If it doesn't, we create it
-    if PINECONE_INDEX_NAME not in pinecone.list_indexes():
-        # we create a new index
-        pinecone.create_index(name=PINECONE_INDEX_NAME, metric="cosine", dimension=1536)
-    # The OpenAI embedding model `text-embedding-ada-002 uses 1536 dimensions`
-    docsearch = Pinecone.from_documents(docs, embeddings, index_name=PINECONE_INDEX_NAME)
-    print(docsearch)
-    print(docs[0].page_content)
-    print("*******Added to Pinecone Vector*******")
+if "chat_results_history" not in st.session_state:
+    st.session_state["chat_results_history"] = []
 
 
-def test_streamit():
-    st.write("""
-    # My first app
-    Hello *world!*
-    """)
+def create_sources_string(sources_urls: Set[str]) -> str:
+    if not sources_urls:
+        return ""
+    sources_list = list(sources_urls)
+    sources_list.sort()
+    sources_string = "sources:\n"
+    for i, source in enumerate(sources_list):
+        sources_string += f"{i+1}, {source}\n"
+    return sources_string
 
 
-if __name__ == '__main__':
-    ingest_chain()
+if prompt:
+    with st.spinner("Generating response..."):
+        generated_response = run_llm(query=prompt)
+        sources = set(
+            [doc.metadata["source"] for doc in generated_response["source_documents"]]
+        )
+        formatted_response = (
+            f"{generated_response['result']}"
+        )
 
+        st.session_state["user_prompt_history"].append(prompt)
+        st.session_state["chat_results_history"].append(formatted_response)
 
+if st.session_state["chat_results_history"]:
+    for generated_response, user_query in zip(
+            st.session_state["chat_results_history"],
+            st.session_state["user_prompt_history"],
+    ):
+        message(user_query, is_user=True)
+        message(generated_response)

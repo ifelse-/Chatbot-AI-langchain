@@ -10,6 +10,7 @@ streamlit = "*"
 bs4 = "*"
 pinecone-client = "*"
 tiktoken = "*"
+streamlit-chat = "*"
 
 [dev-packages]
 
