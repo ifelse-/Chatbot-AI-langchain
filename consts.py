@@ -1,0 +1,1 @@
+PINECONE_INDEX_NAME="assistant-app-cone"
