@@ -1,6 +1,7 @@
 import os
 from typing import List, Dict, Any
 from langchain.chains import ConversationalRetrievalChain
+from langchain.memory import ConversationBufferMemory
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
@@ -32,4 +33,4 @@ def run_llm(query: str) -> Any:
 
 
 if __name__ == '__main__':
-    print(run_llm(query=""))
+    print(run_llm(query="Is it a good idea to buy a TV $3000 this month with the money in a bank account?"))
