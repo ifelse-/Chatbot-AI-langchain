@@ -17,8 +17,8 @@ pinecone.init(
 )
 
 
-def ingest_chain() -> None:
-    loader = TextLoader("bio/person.txt")
+def ingest_chain(file) -> None:
+    loader = TextLoader(file)
     documents = loader.load()
     text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
     docs = text_splitter.split_documents(documents)
@@ -36,5 +36,5 @@ def ingest_chain() -> None:
 
 
 if __name__ == '__main__':
-    ingest_chain()
+    ingest_chain("user/account.txt")
 

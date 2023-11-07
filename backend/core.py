@@ -2,8 +2,10 @@ import os
 from typing import List, Dict, Any
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationSummaryBufferMemory
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
+from langchain.llms import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.vectorstores import Pinecone
 from consts import PINECONE_INDEX_NAME
@@ -20,17 +22,26 @@ def run_llm(query: str) -> Any:
     docsearch = Pinecone.from_existing_index(
         embedding=embeddings,
         index_name=PINECONE_INDEX_NAME)
-    chat = ChatOpenAI(verbose=True, temperature=0)
 
-    qa = RetrievalQA.from_chain_type(
-        llm=chat,
-        chain_type="stuff",
-        retriever=docsearch.as_retriever(),
+    memory = ConversationBufferMemory(
+        memory_key="chat_history",
+        input_key='question',
+        output_key='answer',
+        return_messages=True)
+    qa = ConversationalRetrievalChain.from_llm(
+        ChatOpenAI(temperature=0),
+        docsearch.as_retriever(),
+        memory=memory,
         return_source_documents=True
     )
 
-    return qa({"query": query})
+    # chat = ChatOpenAI(verbose=True, temperature=0)
+    # qa = RetrievalQA.from_chain_type(
+    #     llm=chat,
+    #     chain_type="stuff",
+    #     retriever=docsearch.as_retriever(),
+    #     return_source_documents=True
+    # )
+    result = qa({"question": query})
+    return result
 
-
-if __name__ == '__main__':
-    print(run_llm(query="Is it a good idea to buy a TV $3000 this month with the money in a bank account?"))
