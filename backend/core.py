@@ -29,7 +29,7 @@ def run_llm(query: str) -> Any:
         output_key='answer',
         return_messages=True)
     qa = ConversationalRetrievalChain.from_llm(
-        ChatOpenAI(verbose=True, temperature=0),
+        ChatOpenAI(temperature=0),
         docsearch.as_retriever(),
         memory=memory,
         return_source_documents=True
