@@ -12,6 +12,7 @@ pinecone-client = "*"
 tiktoken = "*"
 streamlit-chat = "*"
 black = "*"
+gunicorn = "*"
 
 [dev-packages]
 

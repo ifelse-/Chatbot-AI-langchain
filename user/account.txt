@@ -1,0 +1,23 @@
+John Savings Account
+Savings Account Balance: $3,000
+Monthly Income: $2,500
+Fixed Expenses:
+Rent/Mortgage: $1,000
+Utilities (Electricity, Water, Gas, Internet, etc.): $200
+Car Loan/Insurance: $300
+Groceries/Food: $250
+Transportation (Gas, Public Transport, etc.): $100
+Variable Expenses:
+Dining Out/Entertainment: $150
+Travel/Vacation: $100
+Personal Expenses (Shopping, Hobbies, etc.): $200
+Emergency Fund (Recommended): $200
+Savings and Investments:
+Emergency Fund (3-6 months' worth of living expenses): $1,500
+Retirement Account (e.g., 401(k), IRA): $100
+Additional Savings (e.g., for a major purchase): $150
+Total Monthly Expenses: Calculate the total of all your expenses.
+Total Expenses: $2,600
+Remaining Balance: Subtract your total monthly expenses from your savings account balance.
+Remaining Balance: $400
+Budgeting and Adjustments: Make adjustments as needed to ensure you're saving enough and not overspending. You can consider adjusting variable expenses, increasing savings, or finding ways to cut costs.
